@@ -20,38 +20,38 @@ class browse_Class(QWidget):
         self.baseDir = os.getcwd() #Store based directory
 
         #Setup the window
-        self.setupWindow(800, 400, 'FTP: Browse Files', QIcon(self.baseDir + '\\FolderIcon.png'))
+        self.setup_Window(800, 400, 'FTP: Browse Files', QIcon(self.baseDir + '\\FolderIcon.png'))
 
         #Create Local and server path text boxes
         self.localPathLineEdit = QLineEdit(self)
         self.serverPathLineEdit = QLineEdit(self)
 
         #Create Local and server path labels
-        self.createPathLabels()
-        self.createPathLineEdits()
+        self.create_Path_Labels()
+        self.create_Path_Line_Edits()
 
         #Create Local and server list widgets for browsing
         self.localListWidget = QListWidget(self)
         self.serverListWidget = QListWidget(self)
 
         #Initialize the list widgets
-        self.refreshLocalFilesListWidget()
-        self.refreshServerFilesListWidget()
+        self.refresh_Local_Files_List_Widget()
+        self.refresh_Server_Files_List_Widget()
 
         #Initialize buttons
-        self.createUpDirBtns()
-        self.createChangeToCurrDirBtns()
-        self.createChangeDirBtns()
-        self.createPermissionsBtns()
-        self.createDeleteDirBtns()
+        self.create_Up_Dir_Btns()
+        self.create_Change_To_Curr_Dir_Btns()
+        self.create_Change_Dir_Btns()
+        self.create_Permissions_Btns()
+        self.create_Delete_Dir_Btns()
 
         #Connect server click and double click events to navigation and setting the path
-        self.serverListWidget.itemClicked.connect(self.setPath)
-        self.serverListWidget.itemDoubleClicked.connect(self.serverNavigate)
+        self.serverListWidget.itemClicked.connect(self.set_Server_Path)
+        self.serverListWidget.itemDoubleClicked.connect(self.server_Navigate)
 
         #Connect local click and double click events to navigation and setting the path
-        self.localListWidget.itemClicked.connect(self.setLocalPath)
-        self.localListWidget.itemDoubleClicked.connect(self.localNavigate)
+        self.localListWidget.itemClicked.connect(self.set_Local_Path)
+        self.localListWidget.itemDoubleClicked.connect(self.local_Navigate)
     
     #*********************
     #shows and runs the BrowseFiles widget
@@ -67,7 +67,7 @@ class browse_Class(QWidget):
     #title is the desired title that will display along the top of the window
     #icon is the QIcon to display along the top of the window
     #*********************
-    def setupWindow(self, width, height, title, icon):
+    def setup_Window(self, width, height, title, icon):
         self.setWindowTitle(title) #Set the title
         self.setWindowIcon(icon) #Set the icon
         self.setFixedSize(width, height) #Set the width/height
@@ -75,7 +75,7 @@ class browse_Class(QWidget):
     #*********************
     #creates the file path labels for the server and local files
     #*********************
-    def createPathLabels(self):
+    def create_Path_Labels(self):
         # The label for the local path
         self.localPathLabel = QLabel('Local Path:', self)
         self.localPathLabel.move(110, 12)
@@ -87,7 +87,7 @@ class browse_Class(QWidget):
     #*********************
     #moves the file path line edit (text boxes) for the server and local files
     #*********************
-    def createPathLineEdits(self):
+    def create_Path_Line_Edits(self):
         # The line edit for the local path
         self.localPathLineEdit.move(170, 10)
 
@@ -97,27 +97,27 @@ class browse_Class(QWidget):
     #*********************
     #creates the delete directory buttons for both local and server
     #*********************
-    def createDeleteDirBtns(self):
+    def create_Delete_Dir_Btns(self):
         self.deleteLocalDirBtn = QPushButton('Delete\nDirectory', self)
         self.deleteLocalDirBtn.setIcon(QIcon('img\\FolderDelete.png'))
         self.deleteLocalDirBtn.setToolTip('Delete directory')
         self.deleteLocalDirBtn.move(10, 145)
 
         #TODO: delete local directory
-        #self.deleteLocalDirBtn.clicked.connect(self.deleteLocalDir)
+        #self.deleteLocalDirBtn.clicked.connect(self.delete_Local_Dir)
 
         self.deleteServerDirBtn = QPushButton('Delete\nDirectory', self)
         self.deleteServerDirBtn.setIcon(QIcon('img\\FolderDelete.png'))
         self.deleteServerDirBtn.setToolTip('Delete directory')
         self.deleteServerDirBtn.move(715, 145)
-        self.deleteServerDirBtn.clicked.connect(self.deleteServerDir)
+        self.deleteServerDirBtn.clicked.connect(self.delete_Server_Dir)
 
 
     #*********************
     #Deletes a directory from the server
     #RETURN is False if error occurs else true
     #*********************
-    def deleteServerDir(self):
+    def delete_Server_Dir(self):
 
         # TODO: FIX THIS, this is broken
         dirName = self.serverPathLineEdit.text().split('/')[-1];
@@ -126,7 +126,7 @@ class browse_Class(QWidget):
             if self.dir_Exists(dirName): #if the directory exists
                 self.ftp.rmd(dirName) #remove the directory
                 print("Directory: ", dirName, " deletion successful ") #print successful deletion message
-                self.refreshServerFilesListWidget()
+                self.refresh_Server_Files_List_Widget()
             else: #otherwise, the directory does not exist
                 print("Directory: ", dirName, " does not exist") #print directory DNE message
                 return False
@@ -157,7 +157,7 @@ class browse_Class(QWidget):
     #*********************
     #creates the permissions buttons for both local and server
     #*********************
-    def createPermissionsBtns(self):
+    def create_Permissions_Btns(self):
         self.rwxLocalBtn = QPushButton('RWX', self)
         self.rwxLocalBtn.setToolTip('Read-Write-Execute')
         self.rwxLocalBtn.move(10,195)
@@ -213,7 +213,7 @@ class browse_Class(QWidget):
     #*********************
     #refresh the list widget for the local navigation
     #*********************
-    def refreshLocalFilesListWidget(self):
+    def refresh_Local_Files_List_Widget(self):
         self.localListWidget.clear()
         self.localListWidget.setFixedSize(250, 300)
 
@@ -234,7 +234,7 @@ class browse_Class(QWidget):
     #*********************
     #refresh the list widget for the server navigation
     #*********************
-    def refreshServerFilesListWidget(self):
+    def refresh_Server_Files_List_Widget(self):
         self.serverListWidget.clear()
         self.serverListWidget.setFixedSize(250, 300)
 
@@ -259,7 +259,7 @@ class browse_Class(QWidget):
     #*********************
     #sets the server path in the line edit text box
     #*********************
-    def setPath(self, item):
+    def set_Server_Path(self, item):
         self.serverPathLineEdit.clear()
 
         prepender = self.ftp.pwd()
@@ -272,122 +272,123 @@ class browse_Class(QWidget):
     #*********************
     #navigates to the item clicked if it is a server directory
     #*********************
-    def serverNavigate(self, item):
+    def server_Navigate(self, item):
         if self.dir_Exists(item.text()):
             self.ftp.cwd(item.text())
-        self.refreshServerFilesListWidget()
+        self.refresh_Server_Files_List_Widget()
 
     #*********************
     #sets the local path in the line edit text box
     #*********************
-    def setLocalPath(self, item):
+    def set_Local_Path(self, item):
         self.localPathLineEdit.clear()
         self.localPathLineEdit.setText(os.getcwd() + "\\" + item.text())
 
     #*********************
     #navigates to the item clicked if it is a local directory
     #*********************
-    def localNavigate(self, item):
+    def local_Navigate(self, item):
         if os.path.isdir(item.text()):
             os.chdir(item.text())
 
-        self.refreshLocalFilesListWidget()
+        self.refresh_Local_Files_List_Widget()
 
     #*********************
     #creates the "up directory" buttons for local/server
     #*********************
-    def createUpDirBtns(self):
+    def create_Up_Dir_Btns(self):
         self.upLocalDirBtn = QPushButton('Go Up a\nDirectory', self)
         self.upLocalDirBtn.setIcon(QIcon('img\\UpDir.png'))
         self.upLocalDirBtn.setToolTip("Go back a directory")
         self.upLocalDirBtn.move(10,50)
-        self.upLocalDirBtn.clicked.connect(self.upLocalDir)
+        self.upLocalDirBtn.clicked.connect(self.up_Local_Dir)
 
         self.upServerDirBtn = QPushButton('Go Up a\nDirectory', self)
         self.upServerDirBtn.setIcon(QIcon('img\\UpDir.png'))
         self.upServerDirBtn.setToolTip("Go back a directory")
         self.upServerDirBtn.move(715,50)
-        self.upServerDirBtn.clicked.connect(self.upServerDir)
+        self.upServerDirBtn.clicked.connect(self.up_Server_Dir)
 
     #*********************
     #creates the change to current directory buttons for local/server
     #*********************
-    def createChangeToCurrDirBtns(self):
+    def create_Change_To_Curr_Dir_Btns(self):
         self.changeToCurrLocalDirBtn = QPushButton('Current\nDirectory', self)
+        
         self.changeToCurrLocalDirBtn.setIcon(QIcon('img\\FolderIcon.png'))
         self.changeToCurrLocalDirBtn.setToolTip("Go to the Current Directory")
         self.changeToCurrLocalDirBtn.move(10,100)
-        self.changeToCurrLocalDirBtn.clicked.connect(self.changeToCurrLocalDir)
+        self.changeToCurrLocalDirBtn.clicked.connect(self.change_To_Curr_Local_Dir)
 
         self.changeToCurrServerDirBtn = QPushButton('Current\nDirectory', self)
         self.changeToCurrServerDirBtn.setIcon(QIcon('img\\FolderIcon.png'))
         self.changeToCurrServerDirBtn.setToolTip("Go to the Current Directory")
         self.changeToCurrServerDirBtn.move(715,100)
-        self.changeToCurrServerDirBtn.clicked.connect(self.changeToCurrServerDir)
+        self.changeToCurrServerDirBtn.clicked.connect(self.change_To_Curr_Server_Dir)
 
     #*********************
     #creates the change to directory buttons for local/server
     #*********************
-    def createChangeDirBtns(self):
+    def create_Change_Dir_Btns(self):
         self.changeLocalDirBtn = QPushButton('', self)
         self.changeLocalDirBtn.setIcon(QIcon('img\\GreenArrow.png'))
         self.changeLocalDirBtn.setToolTip("Change Directory")
         self.changeLocalDirBtn.move(310,8)
-        self.changeLocalDirBtn.clicked.connect(self.changeLocalDir)
+        self.changeLocalDirBtn.clicked.connect(self.change_Local_Dir)
 
         self.changeServerDirBtn = QPushButton('', self)
         self.changeServerDirBtn.setIcon(QIcon('img\\GreenArrow.png'))
         self.changeServerDirBtn.setToolTip("Change Directory")
         self.changeServerDirBtn.move(665,8)
-        self.changeServerDirBtn.clicked.connect(self.changeServerDir)
+        self.changeServerDirBtn.clicked.connect(self.change_Server_Dir)
 
     #*********************
     #changes the local directory to ..
     #*********************
-    def upLocalDir(self):
+    def up_Local_Dir(self):
         os.chdir("..")
         self.localPathLineEdit.setText(os.getcwd())
-        self.refreshLocalFilesListWidget()
+        self.refresh_Local_Files_List_Widget()
         print("Going up a directory to: " + os.getcwd())
 
     #*********************
     #changes the server directory to ..
     #*********************
-    def upServerDir(self):
+    def up_Server_Dir(self):
         self.ftp.cwd("..")
         self.serverPathLineEdit.setText(self.ftp.pwd())
-        self.refreshServerFilesListWidget()
+        self.refresh_Server_Files_List_Widget()
         print("Going up a directory to: " + self.ftp.pwd())
 
     #*********************
     #sets the path of the text box to the current local directory
     #*********************
-    def changeToCurrLocalDir(self):
+    def change_To_Curr_Local_Dir(self):
         self.localPathLineEdit.setText(os.getcwd())
         print("Current directory is: " + os.getcwd())
 
     #*********************
     #sets the path of the text box to the current server directory
     #*********************
-    def changeToCurrServerDir(self):
+    def change_To_Curr_Server_Dir(self):
         self.serverPathLineEdit.setText(self.ftp.pwd())
-        self.refreshServerFilesListWidget()
+        self.refresh_Server_Files_List_Widget()
         print("Current directory is: " + self.ftp.pwd())
 
     #*********************
     #changes to the local directory specified in the path
     #*********************
-    def changeLocalDir(self):
+    def change_Local_Dir(self):
         #TODO: NEEDS TO BE MORE ROBUST
         os.chdir(self.localPathLineEdit.text())
-        self.refreshLocalFilesListWidget()
+        self.refresh_Local_Files_List_Widget()
         print("Current directory is: " + os.getcwd())
 
     #*********************
     #changes to the local directory specified in the path
     #*********************
-    def changeServerDir(self):
+    def change_Server_Dir(self):
         #TODO: NEEDS TO BE MORE ROBUST
         self.ftp.cwd(self.serverPathLineEdit.text())
-        self.refreshServerFilesListWidget()
+        self.refresh_Server_Files_List_Widget()
         print("Current directory is: " + self.ftp.pwd())
