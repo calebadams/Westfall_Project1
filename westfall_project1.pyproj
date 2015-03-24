@@ -22,6 +22,9 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Connection_Class.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="westfall_project1.py" />
   </ItemGroup>
   <PropertyGroup>
