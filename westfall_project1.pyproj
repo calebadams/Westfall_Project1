@@ -22,10 +22,23 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Browse_Class.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Connection_Class.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="westfall_project1.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="img\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="img\FileIcon.png" />
+    <Content Include="img\FolderDelete.png" />
+    <Content Include="img\FolderIcon.png" />
+    <Content Include="img\FolderUp.png" />
+    <Content Include="img\GreenArrow.png" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
